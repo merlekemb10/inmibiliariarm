@@ -1,0 +1,783 @@
+
+window.onload = function () {
+    const filterButtons = document.querySelectorAll('.filter-buttons button');
+    const subcategories = document.querySelector('.subcategories');
+    const items = document.querySelectorAll('.venta-item');
+
+    // Crea una estructura de datos que contiene las categorías y subcategorías
+    //TODO ESTO DEVERIA SER DESDE UNA LLAMADA ASINCRONA
+    const data = {
+        'all': {
+            'label': 'TODOS',
+            'subcategories': {
+                'la-serena': {
+                    'label': 'LA SERENA'
+                },
+                'valparaiso': {
+                    'label': 'VALPARAÍSO'
+                },
+                'vina-del-mar': {
+                    'label': 'VIÑA DEL MAR'
+                },
+                'las-condes': {
+                    'label': 'LAS CONDES'
+                },
+                'nunoa': {
+                    'label': 'ÑUÑOA'
+                },
+                'macul': {
+                    'label': 'MACUL'
+                },
+                'la-cisterna': {
+                    'label': 'LA CISTERNA'
+                },
+                'santiago': {
+                    'label': 'SANTIAGO'
+                },
+                'independencia': {
+                    'label': 'INDEPENDENCIA'
+                },
+                'puente-alto': {
+                    'label': 'PUENTE ALTO'
+                }
+            }
+        },
+        'iv-region': {
+            'label': 'IV REGIÓN',
+            'subcategories': {
+                'la-serena': {
+                    'label': ''
+                },
+
+            }
+        },
+        'v-region': {
+            'label': 'V REGIÓN',
+            'subcategories': {
+                'valparaiso': {
+                    'label': 'VALPARAÍSO'
+                },
+                'vina-del-mar': {
+                    'label': 'VIÑA DEL MAR'
+                }
+            }
+        },
+        'region-metropolitana': {
+            'label': 'REGIÓN METROPOLITANA',
+            'subcategories': {
+                'las-condes': {
+                    'label': 'LAS CONDES'
+                },
+                'nunoa': {
+                    'label': 'ÑUÑOA'
+                },
+                'macul': {
+                    'label': 'MACUL'
+                },
+                'la-cisterna': {
+                    'label': 'LA CISTERNA'
+                },
+                'santiago': {
+                    'label': 'SANTIAGO'
+                },
+                'independencia': {
+                    'label': 'INDEPENDENCIA'
+                },
+                'puente-alto': {
+                    'label': 'PUENTE ALTO'
+                }
+            }
+        }
+    };
+
+// Crea botones para cada subcategoría y los agrega a la lista de subcategorías
+    function createSubcategoryButtons(category, subcategory) {
+        subcategories.innerHTML = '';
+        const defaultCategory = 'all';
+        const defaultSubcategory = 'all';
+
+        if (data[category].subcategories) {
+            for (const subcategory in data[category].subcategories) {
+                const subcategoryButton = document.createElement('button');
+                subcategoryButton.setAttribute('data-category', category);
+                subcategoryButton.setAttribute('data-subcategory', subcategory);
+                subcategoryButton.textContent = data[category].subcategories[subcategory].label;
+                subcategoryButton.classList.add("li-filtro-sub");
+                subcategoryButton.classList.add("font-helevetica-medium-condensed");
+                subcategories.appendChild(subcategoryButton);
+            }
+        }
+    }
+// Filtra los elementos de la cuadrícula por categoría y subcategoría
+    function filterItems(category, subcategories) {
+        items.forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+            const itemSubcategories = item.getAttribute('data-subcategory').split(',');
+            if ((category === 'all' || itemCategory === category) &&
+                    (subcategories.length === 0 || subcategories.some(subcategory => itemSubcategories.includes(subcategory)))) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+// Muestra los botones de subcategoría correspondientes cuando se selecciona una categoría
+    function handleCategoryClick(event) {
+        const category = event.target.getAttribute('data-category');
+        const subcategoryList = event.currentTarget.nextElementSibling;
+        createSubcategoryButtons(category, subcategoryList);
+        filterItems(category, []);
+        filterButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+
+// Filtra los elementos de la cuadrícula por subcategoría cuando se selecciona un botón de subcategoría
+    function handleSubcategoryClick(event) {
+        const category = event.target.getAttribute('data-category');
+        const subcategory = event.target.getAttribute('data-subcategory');
+        const subcategoryButtons = event.currentTarget.querySelectorAll('button');
+        const selectedSubcategories = [];
+        event.target.classList.toggle('active');
+
+        // hideTitle(subcategory) ;
+
+        subcategoryButtons.forEach(button => {
+            if (button.classList.contains('active')) {
+                //agrega la x a la clase seleccionada
+                button.classList.add("remove");
+                selectedSubcategories.push(button.getAttribute('data-subcategory'));
+
+            } else {
+                //quita la x a la clase cuando se preciona
+                button.classList.remove("remove");
+            }
+        });
+        filterItems(category, selectedSubcategories);
+    }
+
+    /*function  hideTitle(category) {
+     const rmTitle = document.getElementById("rm-title");
+     const rgTitle = document.getElementById("rg-title");
+     
+     if (category == "v-region" || category == "iv-region") {
+     rmTitle.style.display = "none";
+     rgTitle.style.display = "block";
+     } else if (category == "region-metropolitana") {
+     rmTitle.style.display = "block";
+     rgTitle.style.display = "none";
+     } else if(category == "valparaiso" ||category=="vina-del-mar" || category=="la-serena" ) {
+     rmTitle.style.display = "none";
+     rgTitle.style.display = "block";
+     }else {
+     rmTitle.style.display = "block";
+     rgTitle.style.display = "block";
+     }
+     }*/
+
+
+
+//Carga los elementos de la sub categoria
+    createSubcategoryButtons('all', 'all');
+
+// Agrega el controlador de eventos a los botones de categoría y subcategoría
+    filterButtons.forEach(button => button.addEventListener('click', handleCategoryClick));
+    subcategories.addEventListener('click', handleSubcategoryClick);
+};
+
+
+
+
+$(function () {
+
+  
+    var s = $("#sticker");
+    var pos = s.position();
+
+    $(window).scroll(function () {
+        var windowpos = $(window).scrollTop();
+        var w = $(window).width();
+        if (windowpos > 150) {
+            $("#logo").css({width: "80px", height: "80px"});
+            $("#logo-menu").css({width: "64px", height: "64px"});
+            $("#sticker").css({background: "rgba(0,0,0,.7)"});
+        } else {
+            if (w >= 650) {
+                $("#logo").css({
+                    width: "120px",
+                    height: "120px",
+                    "-webkit-transition": "all 0.5s ease",
+                    "-moz-transition": "all 0.5s ease",
+                    "-ms-transition": "all 0.5s ease",
+                    "-o-transition": "all 0.5s ease",
+                    transition: "all 0.5s ease",
+                });
+
+                $("#logo-menu").css({
+                    width: "84px",
+                    height: "84px",
+                    "-webkit-transition": "all 0.5s ease",
+                    "-moz-transition": "all 0.5s ease",
+                    "-ms-transition": "all 0.5s ease",
+                    "-o-transition": "all 0.5s ease",
+                    transition: "all 0.5s ease",
+                });
+            } else {
+                $("#logo").css({
+                    width: "80px",
+                    height: "80px",
+                    "-webkit-transition": "all 0.5s ease",
+                    "-moz-transition": "all 0.5s ease",
+                    "-ms-transition": "all 0.5s ease",
+                    "-o-transition": "all 0.5s ease",
+                    transition: "all 0.5s ease",
+                });
+
+                $("#logo-menu").css({
+                    width: "60px",
+                    height: "60px",
+                    "-webkit-transition": "all 0.5s ease",
+                    "-moz-transition": "all 0.5s ease",
+                    "-ms-transition": "all 0.5s ease",
+                    "-o-transition": "all 0.5s ease",
+                    transition: "all 0.5s ease",
+                });
+            }
+
+            $("#sticker").css({
+                background: "rgba(0,0,0,0)",
+                "-webkit-transition": "all 0.5s ease",
+                "-moz-transition": "all 0.5s ease",
+                "-ms-transition": "all 0.5s ease",
+                "-o-transition": "all 0.5s ease",
+                transition: "all 0.5s ease",
+            });
+        }
+    });
+
+    $(".l0").click(function () {
+        var w = $(window).width();
+        if (w <= 1199) {
+            var sm = $(this).attr("data-sm");
+            var open = $(sm).hasClass("sm-open");
+            if (open) {
+                $(".submenu ").slideUp();
+
+                $(".submenu ").removeClass("sm-open");
+                return false;
+            } else {
+                $(".submenu ").removeClass("sm-open");
+                $(".submenu").slideUp();
+            }
+            $(sm).slideToggle(function () {
+                $(this).addClass("sm-open");
+            });
+        }
+    });
+
+
+
+    $(".region").click(function () {
+        // quitar .seleccionado a todos (por si hay alguno)
+        $(".region").removeClass("item-activo-buscador");
+        // agregar seleccionado a "este" elemento.
+        $(this).addClass("item-activo-buscador");
+        var region = $(this).attr("data-region");
+        if (region == 5000 || region == 13000) {
+            $(".tipo").slideDown();
+            $("#region").val(region);
+        } else {
+            $("#region").val(region);
+            $("#tipo").val("departamento");
+            $("#search").submit();
+        }
+    });
+
+    $(".sel_tipo").click(function () {
+        var region = $("#region").val();
+        var tipo = $(this).attr("data-tipo");
+        $("#region").val(region);
+        $("#tipo").val(tipo);
+        $("#search").submit();
+    });
+
+    //Proyectos en venta
+
+    //Proyectos en venta
+
+    $(".box-tabs").on("click", function (e) {
+        e.preventDefault();
+        let selected = $(this).attr("data-show");
+        if ($(this).hasClass("box-tabs-active")) {
+        } else {
+            $(".box-tabs").removeClass("box-tabs-active");
+            $(this).addClass("box-tabs-active");
+            $(".media").hide();
+            $(selected).fadeIn(1000);
+        }
+    });
+
+    $(".sel_tipo_vn").click(function () {
+        var region = $("#region_vn").val();
+        var tipo = $(this).attr("data-tipo");
+        $("#region_vn").val(region);
+        $("#tipo_vn").val(tipo);
+        $("#search").submit();
+    });
+
+    /**********************************
+     *
+     * SLIDER BANNERS HOME
+     *
+     **********************************/
+    const slickBanners = $(".banners");
+    slickBanners.slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        autoplaySpeeds: [20000, 5000]
+    });
+
+    /**********************************
+     *
+     * CARUSEL LINEAS
+     *********************************/
+
+    const slickLineas = $(".slk_lineas");
+    slickLineas.slick({
+        infinite: true,
+        speed: 300,
+        slidesToShow: 7,
+        slidesToScroll: 7,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 4,
+                    infinite: true,
+                    dots: true,
+                    arrows: false,
+                },
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    dots: true,
+                    arrows: false,
+                },
+            },
+
+            {
+                breakpoint: 480,
+                settings: {
+                    dots: true,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    arrows: false,
+                },
+            },
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+        ],
+    });
+
+    /*******************************
+     *
+     * CARUSEL OPORTUNIDADES HOME
+     *
+     * *****************************/
+    const slickOportunidades = $(".slk_oportunidades");
+    slickOportunidades.slick({
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        centerPadding: "40px",
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    arrows: false,
+                    centerPadding: "40px",
+                    dots: true,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    centerPadding: "40px",
+                    arrows: false,
+                    dots: true,
+                },
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    centerPadding: "40px",
+                    arrows: false,
+                    dots: true,
+                },
+            },
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+        ],
+    });
+
+    /********************************
+     * CARRUSEL PROYECTOS EN VENTA
+     *
+     ********************************/
+
+    const slickVentas = $(".carrusel-proyectos-venta");
+
+    slickVentas.slick({
+        arrows: false,
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    arrows: false,
+                    dots: true,
+                },
+            },
+
+            {
+                breakpoint: 680,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    rows: false,
+                },
+            },
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+        ],
+    });
+
+
+
+    const slickVentasRegion = $(".carrusel-proyectos-venta-region");
+
+    slickVentasRegion.slick({
+        arrows: false,
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    arrows: false,
+                    dots: true,
+                },
+            },
+
+            {
+                breakpoint: 680,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    rows: false,
+                },
+            },
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+        ],
+    });
+
+
+    $("#tipo, #comuna").select2({
+        placeholder: "SELECCIONA TIPO",
+        minimumResultsForSearch: Infinity,
+    });
+
+    $("#comuna").select2({
+        placeholder: "SELECCIONA COMUNA",
+        minimumResultsForSearch: Infinity,
+    });
+
+    var select2Options = {
+        width: "resolve",
+        minimumResultsForSearch: Infinity,
+    };
+    var apiUrl = BASE_URL + "comunas/:parentId:";
+    //$('select').select2(select2Options);
+    var cascadLoading = new Select2Cascade(
+            $("#tipo"),
+            $("#comuna"),
+            apiUrl,
+            select2Options
+            );
+    cascadLoading.then(function (parent, child, items) {
+        // Dump response data
+        console.log(items);
+    });
+
+
+
+    $("#btn-search").on("click", (e) => {
+
+        if ($("#tipo").val() == "") {
+            $(".error-tipo").show();
+            return false;
+        }
+
+        if ($("#comuna").val() == "") {
+            $(".error-comuna").show();
+            return false;
+        }
+
+
+        $.ajax({
+            type: "post",
+            url: BASE_URL + "buscador/proyectos",
+            data: {
+                tipo: $("#tipo").val(),
+                comuna: $("#comuna").val(),
+            },
+            dataType: "html",
+            beforeSend: function () {
+
+                $("#preloader").fadeIn(200);
+            },
+            success: function (response) {
+
+                if (response) {
+
+                    $(".error-tipo").hide();
+                    $(".error-comuna").hide();
+
+
+
+                    changeVideos($("#comuna").val());
+                    changeProjects(response);
+
+                }
+            },
+        });
+        e.preventDefault();
+    });
+});
+
+const changeVideos = comuna => {
+
+    let htmlVideos = "";
+    let tipo = $("#tipo").val();
+
+    if (tipo == 'oficina') {
+        htmlVideos = `
+         <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block">
+                    <source id="desktop" src="/videos/nuestra_empresa/Oficina-Desktop-1.mp4" type="video/mp4" class="desktop ">
+                </video>
+                <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-block d-md-block d-lg-none d-xl-none d-none-block">
+                    <source id="tablet" src="/videos/nuestra_empresa/tablet-of.mp4" type="video/mp4">
+                </video>
+                <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class=" d-block d-md-none d-lg-none d-xl-none d-xxl-none ">
+                    <source id="smartphone" src="/videos/nuestra_empresa/Oficina-mobile-1.mp4" type="video/mp4">
+                </video>`;
+
+
+    } else {
+
+        switch (comuna) {
+            case "2101":
+            case "4101":
+
+                htmlVideos = `
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block">
+            <source id="desktop" src="/videos/nuestra_empresa/playa-desktop2.mp4" type="video/mp4" class="desktop ">
+        </video>
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-block d-md-block d-lg-none d-xl-none d-none-block">
+            <source id="tablet" src="/videos/nuestra_empresa/playa_tablet_2.mp4" type="video/mp4">
+        </video>
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class=" d-block d-md-none d-lg-none d-xl-none d-xxl-none ">
+            <source id="smartphone" src="/videos/nuestra_empresa/mob_playa_v2.mp4" type="video/mp4">
+        </video>`;
+                break;
+            case  "5103":
+            case  "5101":
+            case  "5109":
+                htmlVideos = `
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block">
+            <source id="desktop" src="/videos/nuestra_empresa/playa-desktop-op3.mp4" type="video/mp4" class="desktop ">
+        </video>
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-block d-md-block d-lg-none d-xl-none d-none-block">
+            <source id="tablet" src="/videos/nuestra_empresa/playa_tablet_op2.mp4" type="video/mp4">
+        </video>
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class=" d-block d-md-none d-lg-none d-xl-none d-xxl-none ">
+            <source id="smartphone" src="/videos/nuestra_empresa/mob_playa_v1-clara.mp4" type="video/mp4">
+        </video>
+        `;
+                break;
+            case "13108":
+            case "13109":
+            case "13110":
+            case "13114":
+            case "13118":
+            case "13120":
+            case "13123":
+            case "13201":
+            case "13130":
+            case "13101":
+            case "13132":
+                htmlVideos = `
+          <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block">
+            <source id="desktop" src="/videos/nuestra_empresa/Desktop-Urbano-1.mp4" type="video/mp4" class="desktop ">
+          </video>
+          <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-block d-md-block d-lg-none d-xl-none d-none-block">
+              <source id="tablet" src="/videos/nuestra_empresa/Tablet-Urbano.mp4" type="video/mp4">
+          </video>
+          <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class=" d-block d-md-none d-lg-none d-xl-none d-xxl-none ">
+              <source id="smartphone" src="/videos/nuestra_empresa/Mobile-Urbano-1.mp4" type="video/mp4">
+          </video>
+        `;
+                break;
+            default:
+                htmlVideos = `
+          <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block">
+            <source id="desktop" src="/videos/nuestra_empresa/Desktop-Urbano-1.mp4" type="video/mp4" class="desktop ">
+          </video>
+          <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="d-block d-none d-sm-block d-md-block d-lg-none d-xl-none d-none-block">
+              <source id="tablet" src="/videos/nuestra_empresa/Tablet-Urbano.mp4" type="video/mp4">
+          </video>
+          <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class=" d-block d-md-none d-lg-none d-xl-none d-xxl-none ">
+              <source id="smartphone" src="/videos/nuestra_empresa/Mobile-Urbano-1.mp4" type="video/mp4">
+          </video>
+        `;
+                break;
+        }
+    }
+    $("#videos").fadeIn().html(htmlVideos);
+
+
+    /*$.ajax({
+     type: "post",
+     url: BASE_URL + "buscador/video",
+     data: {
+     tipo: $("#tipo").val(),
+     comuna: $("#comuna").val(),
+     },
+     dataType: "html",
+     success: function (response) {
+     $("#videos").html(response);
+     },
+     });*/
+
+}
+
+const changeProjects = response => {
+
+    $("#preloader").fadeOut(100);
+
+    $(".nombre-comuna-proyecto")
+            .html($("#comuna").select2("data")[0]["text"])
+            .show();
+    $(".carrusel-proyectos-venta").slick("unslick");
+    $(".carrusel-proyectos-venta").html(response);
+
+    $(".vista-regiones").hide();
+    $(".tit-metro").hide();
+
+    $(".carrusel-proyectos-venta").slick({
+        arrows: false,
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    arrows: false,
+                    dots: true,
+                },
+            },
+
+            {
+                breakpoint: 680,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    rows: false,
+                },
+            },
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+        ],
+    });
+}
+
+function validateFormSearch() {
+    if ($("#tipo").val() == "") {
+        $(".error-tipo").show();
+        return false;
+    }
+
+    if ($("#comuna").val() == "") {
+        $(".error-comuna").show();
+        return false;
+    }
+
+    return true;
+}
+
+function openNav() {
+    var w = $(window).width();
+    if (w >= 300 && w <= 600) {
+        var ancho = "70%";
+    } else {
+        var ancho = "40%";
+    }
+    $(".contenedor-menu").show();
+    $("#mySidenav").css("width", ancho);
+}
+
+function abrir_menu() {
+    $("#mySidenav").css("right", "0px");
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    $("#mySidenav").css("right", "-80%");
+}
+
+function cerrar_menu() {
+    $("#mySidenav").css("right", "-100%");
+}
