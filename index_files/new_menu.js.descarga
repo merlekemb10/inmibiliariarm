@@ -1,0 +1,168 @@
+
+
+
+$(document).ready(function () {
+    var s = $("#stick");
+    var pos = s.position();
+
+
+    $(window).resize(function () {
+        const windowWidth = $(window).width();
+        if (windowWidth > 1299) {
+            $(".inm-dropdown").css({"display": ""});
+        }
+    });
+
+
+
+
+    $(".side-nav-bar-menu li.side-drop a").click(function () {
+        const t = $(this);
+        const tp = t.next();
+        var p = t.parent().siblings().find('ul');
+        tp.slideToggle();
+        p.slideUp();
+    });
+
+
+
+    $(window).scroll(function () {
+        var windowpos = $(window).scrollTop();
+        var windowWidth = $(window).width();
+
+        if (windowpos > 150) {
+            $("#logo").css({
+                width: "80px",
+                height: "80px",
+            });
+
+            $("#stick").css({
+                background: "rgba(0,0,0,.7)",
+            });
+        } else {
+            if (windowWidth >= 650) {
+                $("#logo").css({
+                    width: "80px",
+                    height: "80px",
+                    "-webkit-transition": "all 0.5s ease",
+                    "-moz-transition": "all 0.5s ease",
+                    "-ms-transition": "all 0.5s ease",
+                    "-o-transition": "all 0.5s ease",
+                    transition: "all 0.5s ease",
+                });
+            } else {
+                $("#logo").css({
+                    width: "80px",
+                    height: "80px",
+                    "-webkit-transition": "all 0.5s ease",
+                    "-moz-transition": "all 0.5s ease",
+                    "-ms-transition": "all 0.5s ease",
+                    "-o-transition": "all 0.5s ease",
+                    transition: "all 0.5s ease",
+                });
+            }
+
+            $("#stick").css({
+                background: "rgba(0,0,0,0)",
+                "-webkit-transition": "all 0.5s ease",
+                "-moz-transition": "all 0.5s ease",
+                "-ms-transition": "all 0.5s ease",
+                "-o-transition": "all 0.5s ease",
+                transition: "all 0.5s ease",
+            });
+        }
+        /*if ($(document).height() - $(window).height() <= $(window).scrollTop() + 10) {
+         $("#btn-mouse-static").hide();
+         }*/
+    });
+
+    $(".nav-menu li:has(ul)").on("click", function (e) {
+        const windowWidth = $(window).width();
+        if (windowWidth < 1300) {
+            if ($(this).hasClass("activado")) {
+                $(this).removeClass("activado");
+                $(this)
+                        .find("i")
+                        .removeClass("fa fa-chevron-up")
+                        .addClass("fa fa-chevron-down");
+                $(this).children("ul").slideUp();
+            } else {
+                $(".nav-menu li ul").slideUp();
+                $(".nav-menu li").removeClass("activado");
+
+                $(".nav-menu li")
+                        .find("i")
+                        .removeClass("fa fa-chevron-up")
+                        .addClass("fa fa-chevron-down");
+
+                $(this).addClass("activado");
+
+                $(this)
+                        .find("i")
+                        .removeClass("fa fa-chevron-down")
+                        .addClass("fa fa-chevron-up");
+                $(this).children("ul").slideDown();
+            }
+        } else {
+
+
+
+        }
+    });
+
+
+    $(".color-ico").on('click', function () {
+        openSideBar();
+    })
+    $(".bt-close").on('click', function () {
+        closeSidebar();
+    })
+
+});
+
+
+function openSideBar() {
+    $(".side-nav-bar").css({
+        right: "0px",
+        "-webkit-transition": "all 0.2s ease",
+        "-moz-transition": "all 0.2s ease",
+        "-ms-transition": "all 0.2s ease",
+        "-o-transition": "all 0.2s ease",
+        transition: "all 0.2s ease",
+    });
+}
+
+function closeSidebar() {
+    $(".side-nav-bar").css({
+        right: "-100%",
+        "-webkit-transition": "all 0.5s ease",
+        "-moz-transition": "all 0.5s ease",
+        "-ms-transition": "all 0.5s ease",
+        "-o-transition": "all 0.5s ease",
+        transition: "all 0.5s ease",
+    });
+}
+
+function openMenu() {
+    //$("#mySidenav").css("left", "0px");
+
+    $(".nav-content-menu").css({
+        left: "0px",
+        "-webkit-transition": "all 0.5s ease",
+        "-moz-transition": "all 0.5s ease",
+        "-ms-transition": "all 0.5s ease",
+        "-o-transition": "all 0.5s ease",
+        transition: "all 0.5s ease",
+    });
+}
+
+function closeMenu() {
+    $(".nav-content-menu").css({
+        left: "-100%",
+        "-webkit-transition": "all 0.5s ease",
+        "-moz-transition": "all 0.5s ease",
+        "-ms-transition": "all 0.5s ease",
+        "-o-transition": "all 0.5s ease",
+        transition: "all 0.5s ease",
+    });
+}
